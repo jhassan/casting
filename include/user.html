@@ -1,0 +1,62 @@
+<div id="page-wrapper">
+            <div class="row">
+                <div class="col-lg-12">
+                    <h1 class="page-header">User Management</h1>
+                </div>
+                <!-- /.col-lg-12 -->
+            </div>
+            <!-- /.row -->
+            <div class="row">
+                <div class="col-lg-12">
+                    <div class="panel panel-default">
+                        <div class="panel-heading">
+                            User Management
+                        </div>
+                        <div class="alert alert-success" style="display:none;" id="msgUserSuccess"> User added successfully!</div>
+                        <div class="alert alert-danger" style="display:none;" id="msgUserExists"> User already exists, please try another!</div>
+                        <div class="panel-body">
+                            <div class="row">
+                                <div class="col-lg-12">
+                                    <form role="form" id="AddUserForm" ng-app="GoldCastingApp" ng-controller="UserController" name="myForm" novalidate>
+                                        <div class="form-group col-lg-4">
+                                            <label>User Name</label>
+                                            <input class="form-control" placeholder="User Name" name="username" ng-model="username" required>
+                                            <span style="color:red" ng-show="myForm.username.$error">
+                                            <span ng-show="myForm.username.$error.required">Username is required.</span>
+                                            </span>
+                                        </div>
+                                        <div class="form-group col-lg-4">
+                                            <label>Password</label>
+                                            <input class="form-control" type="password" placeholder="Password" name="password" ng-model="password" required>
+                                            <span style="color:red" ng-show="myForm.password.$error">
+                                            <span ng-show="myForm.password.$error.required">Password is required.</span>
+                                            </span>
+                                        </div>
+                                        <div class="form-group col-lg-4">
+                                            <label>User Type</label>
+                                            <select class="form-control" id="user_type" name="user_type" ng-model="user_type" required>
+                                                <option value="">Select User Type</option>
+                                                <option value="1" selected>Admin</option>
+                                                <option value="0">Client</option>
+                                            </select>
+                                            <span style="color:red" ng-show="myForm.user_type.$invalid">
+                                            <span ng-show="myForm.user_type.$error.required">Select User Type.</span>
+                                            </span>
+                                        </div>
+                                        <div class="clear"></div>
+                                        <div class="form-group col-lg-4">
+	                                        <input type="submit" ng-click="AddUser()" class="btn btn-default" ng-disabled="myForm.username.$dirty && myForm.username.$invalid || myForm.password.$dirty && myForm.password.$invalid || myForm.user_type.$invalid" value="Save">
+	                                    </div>
+                                    </form>
+                                </div>
+                                <!-- /.col-lg-6 (nested) -->
+                            </div>
+                            <!-- /.row (nested) -->
+                        </div>	
+                    </div>
+                    <!-- /.panel -->
+                </div>
+                <!-- /.col-lg-12 -->
+            </div>
+            <!-- /.row -->
+        </div>

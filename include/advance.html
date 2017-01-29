@@ -1,0 +1,74 @@
+<div id="page-wrapper">
+            <div class="row">
+                <div class="col-lg-12">
+                    <h1 class="page-header">Advance Gold</h1>
+                </div>
+                <!-- /.col-lg-12 -->
+            </div>
+            <!-- /.row -->
+            <div class="row">
+                <div class="col-lg-12">
+                    <div class="panel panel-default">
+                        <div class="panel-heading">
+                            Advance Gold
+                        </div>
+                        <div class="panel-body">
+                            <div class="row">
+                                <div class="alert alert-success" style="margin:15px; display:none;" id="msgAdvanceGoldSuccess"> Advance/Debit Gold added successfully!</div>
+                                <div class="col-lg-12">
+                                    <form role="form" name="myForm" id="AdvanceGoldForm" ng-app="GoldCastingApp" ng-controller="AdvanceController" novalidate>
+                                        <div class="form-group col-lg-2">
+                                            <label class="checkbox-inline">
+                                                <input ng-click="toggle()" name="new_client" ng-model="new_client" value="" type="checkbox">Add new client
+                                            </label>
+                                        </div>
+                                        <div ng-show="myVar">
+                                            <div class="form-group col-lg-3">
+                                                <label>Client Name</label>
+                                                <input class="form-control" placeholder="Client Name" ng-model="client_name">
+                                            </div>
+                                            <div class="form-group col-lg-3">
+                                                <label>Shop Name</label>
+                                                <input class="form-control" placeholder="Shop Name" ng-model="shop_name">
+                                            </div>
+                                            <div class="form-group col-lg-3">
+                                                <label>Phone</label>
+                                                <input class="form-control" placeholder="Phone" ng-model="phone">
+                                            </div>
+                                        </div>
+                                        <div class="clear"></div>
+                                        <div class="form-group col-lg-3" ng-hide="div_all_clients">
+                                            <label>All Clients</label>
+                                            <select class="form-control" id="all_client" name="all_client" ng-model="all_client" required>
+                                                <option value="">Select Client</option>
+                                                <option ng-repeat="client in clients" value="{{client.client_id}}">{{client.client_name}}</option>
+                                            </select>
+                                           </div>
+                                        <div class="form-group col-lg-3" ng-class="{'has-error': myForm.advance_gold.$invalid}">
+                                            <label>Advance Gold</label>
+                                            <input ng-maxlength="8" maxlength="8" class="form-control" placeholder="Advance Gold" name="advance_gold" ng-model="advance_gold" ng-pattern="/^[0-9]+(\.[0-9]{1,3})?$/" step="0.001" type="number" required>
+                                            <span style="color:red" ng-show="myForm.advance_gold.$error.maxlength">
+                                            <span ng-show="myForm.advance_gold.$error.required">Advance gold is required.</span>
+                                            </span>
+                                        </div>
+                                        <div class="form-group col-lg-3" ng-class="{'has-error': myForm.advance_gold.$invalid}">
+                                            <label>Debit Gold</label>
+                                            <input ng-maxlength="8" maxlength="8" class="form-control" placeholder="Debit Gold" name="debit_gold" ng-model="debit_gold" ng-pattern="/^[0-9]+(\.[0-9]{1,3})?$/" step="0.001" type="number">
+                                        </div>
+                                         <div class="clear"></div>   
+                                        <div class="form-group col-lg-4">
+                                            <input class="btn btn-default" ng-click="AddAdvance()" type="submit" ng-disabled="myForm.advance_gold.$invalid" value="Save">
+                                        </div>
+                                    </form>
+                                </div>
+                                <!-- /.col-lg-6 (nested) -->
+                            </div>
+                            <!-- /.row (nested) -->
+                        </div>  
+                    </div>
+                    <!-- /.panel -->
+                </div>
+                <!-- /.col-lg-12 -->
+            </div>
+            <!-- /.row -->
+        </div>

@@ -1,0 +1,11 @@
+Options +FollowSymLinks
+
+RewriteEngine on
+
+RewriteRule ^gold_casting$ gold_casting.php [L]
+RewriteRule ^advance$ advance.php [L]
+RewriteRule ^today_rate$ today_rate.php [L]
+RewriteRule ^home$ home.php [L]
+
+
+
