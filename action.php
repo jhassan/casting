@@ -281,8 +281,7 @@
                 
           //       echo "success";
           // break;
-          case 'AddGoldCasting2':
-                //print_r($_POST); die;
+          case 'AddGoldCasting':
                 $casting_gold_weight  = RemoveComma($_POST['casting_gold_weight']);
                 $caret_type           = $_POST['caret_cb'];
                 $client_id            = $_POST['all_client'];
@@ -298,8 +297,9 @@
                 $hd_grand_total_gold  = RemoveComma($_POST['hd_grand_total_gold']);
                 $hd_total_gold_weight  = RemoveComma($_POST['hd_total_gold_weight']);
                 $get_pure_gold        = RemoveComma($_POST['get_pure_gold']);
-                $remaining_gold       = RemoveComma($_POST['remaining_gold']);
-
+                $hd_total_remaining_gold = RemoveComma($_POST['hd_total_remaining_gold']);
+                $remaining_advance_gold =  RemoveComma($_POST['hd_total_remaining_advance_gold']);
+                $casting_labour_fee = $casting_gold_weight * $mb_entry;
                 // Add Gold Casting Data
                 $GoldArray = array('client_id' => $client_id, 
                                     'caret_type' => $caret_type, 
@@ -309,33 +309,13 @@
                                     'pure_gold' => $hd_pure_weight_gold,
                                     'pure_gold_with_kat' => $hd_pure_gold_with_kat, 
                                     'after_cast_pay_gold' => $get_pure_gold,
-                                    'remaining_gold' => $hd_grand_total_gold,
-                                    'casting_labour_fee' => $hd_labore_fee_gold,
+                                    'remaining_gold' => $hd_total_remaining_gold,
+                                    'casting_labour_fee' => $casting_labour_fee,
+                                    'remaining_advance_gold' => $remaining_advance_gold,
+                                    'casting_labour_fee_gold' => $hd_labore_fee_gold,
                                     'date_created' => date("Y-m-d H:i:s") );
 
                 $casting_id = InsertRec("tbl_casting", $GoldArray);
-                // Add Gold after casting in Accounts
-                // $WorkingProcessDebitAcc = GetCOA(2, "a"); // Working Process COA
-                // $InventoryCreditAcc     = GetCOA(1, "a"); // Inventory COA
-                // $FinishGoodsDebitAcc    = GetCOA(3, "a"); // Finish Goods COA
-                // $WorkingProcessCreditAcc = GetCOA(2, "a"); // Finish Goods COA
-                // $ClientDebitAcc         = GetCOA((int)$client_id, "c"); // Client Debit COA
-                // $FinishGoodsCreditAcc   = GetCOA(3, "a"); // Finish Goods COA
-                // $OwnerGoldDebitAcc      = GetCOA(4, "a"); // Owner Gold COA
-                // $ClientCreditAcc        = GetCOA((int)$client_id, "c"); // Client Credit COA
-
-                // $desc = "Casting Gold " . GetClientName($client_id);
-                // $arrTrans[] = array("coa" => $WorkingProcessDebitAcc, "desc" => $desc,  "debit" => $hd_grand_total_gold, "credit" => 0);
-                // $arrTrans[] = array("coa" => $InventoryCreditAcc, "desc" => $desc,"debit" => 0, "credit" => $hd_grand_total_gold);
-
-                // $arrTrans[] = array("coa" => $FinishGoodsDebitAcc, "desc" => $desc,  "debit" => $hd_grand_total_gold, "credit" => 0);
-                // $arrTrans[] = array("coa" => $WorkingProcessCreditAcc, "desc" => $desc,"debit" => 0, "credit" => $hd_grand_total_gold);
-
-                // $arrTrans[] = array("coa" => $ClientDebitAcc, "desc" => $desc,  "debit" => $hd_grand_total_gold, "credit" => 0);
-                // $arrTrans[] = array("coa" => $FinishGoodsCreditAcc, "desc" => $desc,"debit" => 0, "credit" => $hd_grand_total_gold);
-
-                // $arrTrans[] = array("coa" => $OwnerGoldDebitAcc, "desc" => $desc,  "debit" => $hd_grand_total_gold, "credit" => 0);
-                // $arrTrans[] = array("coa" => $ClientCreditAcc, "desc" => $desc,"debit" => 0, "credit" => $hd_grand_total_gold);
                 // Add Advance Gold in Accounts
                 $debitDescriptions = "Client take gold";
                 $creditDescriptions = "Owner give gold";
@@ -369,20 +349,6 @@
                         'date_created' => date("Y-m-d H:i:s"));
                   $gold_id = InsertRec("tbl_debit_credit_gold", $GoldAccountArray);
                 }
-
-                // foreach($arrTrans as $tran)
-                // {
-                //   $GoldAccountArray = array(
-                //         "debit_gold" => $tran["debit"],
-                //         'client_id' => $client_id,
-                //         'advance_id' => $advance_id,
-                //         "coa_code" => $tran["coa"],
-                //         "`desc`" => $tran["desc"],
-                //         "credit_gold" => $tran["credit"],
-                //         'date_created' => date("Y-m-d H:i:s"));
-                //   $gold_id = InsertRec("tbl_debit_credit_gold", $GoldAccountArray);
-                // }
-                
                 echo "success";
           break;
 

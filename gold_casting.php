@@ -73,11 +73,12 @@ include_once('include/functions.php'); ?>
                                           <input type="text" maxlength="6" class="form-control number_only" name="mb_entry" style="width:100px;" >
                                         </div>
                                         <label>&nbsp;</label>
+                                        <div class="clear"></div>
                                         <button style="margin-left: 6px;" class="btn btn-primary no-print" id="calulate_bill" >Get Bill</button>
                                         <div class="clear"></div><br />
                                         <div class="form-group col-lg-3 no-print">
                                             <label class="urdu-text"><?php echo TextUrud(2);?></label>
-                                            <input maxlength="8" class="form-control number_only" placeholder="Pure Gold" name="get_pure_gold">
+                                            <input maxlength="8" class="form-control number_only" placeholder="Pure Gold" name="get_pure_gold" id="get_pure_gold">
                                         </div>
                                         <div class="clear"></div>    
                                         <div class="form-group col-lg-4 no-print">
@@ -149,9 +150,20 @@ include_once('include/functions.php'); ?>
                                                             <td id="td_grand_total_gold"></td>
                                                             <input type="hidden" id="hd_grand_total_gold"  name="hd_grand_total_gold" value="">
                                                         </tr>
-                                                        <tr class="hide">
+                                                        <tr>
+                                                            <td>Pay Pure Gold</td>
+                                                            <td id="td_pay_pure_gold"></td>
+                                                            <input type="hidden" id="hd_pay_pure_gold"  name="hd_pay_pure_gold" value="">
+                                                        </tr>
+                                                        <tr id="tr_remains_gold" class="">
                                                             <td>Total Remaining Gold</td>
-                                                            <td id="td_total_remaining_gld"></td>
+                                                            <td id="td_total_remaining_gold"></td>
+                                                            <input type="hidden" id="hd_total_remaining_gold"  name="hd_total_remaining_gold" value="">
+                                                        </tr>
+                                                        <tr id="tr_remains_advance_gold" class="hide">
+                                                            <td>Total Remaining Advance Gold</td>
+                                                            <td id="td_total_remaining_advance_gold"></td>
+                                                            <input type="hidden" id="hd_total_remaining_advance_gold"  name="hd_total_remaining_advance_gold" value="">
                                                         </tr>
                                                     </tbody>
                                                 </table>
@@ -250,6 +262,21 @@ include_once('include/functions.php'); ?>
 
                         $("#td_total_remaining_gld").html(obj.get_pure_gold);
 
+                        // Show hide advance and remains gold
+                        var PlusMinus = $("#PlusMinus").html();
+                        if(PlusMinus == "+")
+                        {
+                            $("#tr_remains_advance_gold").removeClass('hide');
+                            $("#tr_remains_gold").addClass('hide');
+                            var total_remain_advance = $("#td_advance_gold").html() - $("#td_total_gold_weight").html();
+                            $("#hd_total_remaining_advance_gold").html(total_remain_advance);
+                            $("#hd_total_remaining_advance_gold").val(total_remain_advance);
+                        }
+                        else
+                        {
+                            $("#td_total_remaining_gold").html(obj.hd_grand_total_gold);
+                            $("#hd_total_remaining_gold").val(obj.hd_grand_total_gold);
+                        }
                     }
 
             });
@@ -288,7 +315,7 @@ include_once('include/functions.php'); ?>
 			event.preventDefault();
 
             $.ajax({
-                url:'action.php?action=AddGoldCasting2',
+                url:'action.php?action=AddGoldCasting',
                 type:'POST',
                 data:$("#GoldCastingForm").serialize(),
                 success:function(response){
@@ -310,6 +337,19 @@ include_once('include/functions.php'); ?>
     // Get value of Rati
     $("#caret_cb").on('keyup', function (){
         $("#m_kat").html($(this).val());
+    });
+
+    // Calculate pure gold after casting
+    $("#get_pure_gold").on('keyup', function (){
+        var pure_gold = $(this).val();
+        $("#td_pay_pure_gold").html(pure_gold);
+        var grand_total_gold = $("#td_grand_total_gold").html();
+        console.log(grand_total_gold); 
+        var current_total = grand_total_gold - pure_gold;
+        console.log(current_total); 
+        $("#td_total_remaining_gold").html(current_total.toFixed(3));
+        $("#hd_total_remaining_gold").val(current_total.toFixed(3));
+        // td_grand_total_gold
     });
 
     // Get Client Advance or remaining gold

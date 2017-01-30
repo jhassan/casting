@@ -59,7 +59,7 @@
                                             <td><?php echo $row['client_name']; ?></td>
                                             <td class="text-center"><?php echo $row['Debit']; ?></td>
                                             <td class="text-center"><?php echo $row['Credit']; ?></td>
-                                            <td  class="text-center" style="font-weight: bold; color: <?php echo $color; ?> "><?php echo $row['AvailBalance']; ?></td>
+                                            <td  class="text-center" style="font-weight: bold; color: <?php echo $color; ?>; font-size: 15px; "><?php echo $row['AvailBalance']; ?></td>
                                         </tr>
                                         <?php } ?>
                                         <?php
@@ -71,6 +71,16 @@
                                                 WHERE `coa_type` = 'c'";
                                          $result = MySQLQuery($SQL);
                                          $row = mysqli_fetch_array($result);
+                                         if ($row['AvailBalance'] > 0) {
+                                                
+                                                $bg_color = "red"; 
+                                                $color = "red";
+                                            }
+                                            else
+                                            {
+                                                $bg_color = "none";
+                                                $color = "none";
+                                            }
                                         ?>
                                     </tbody>
                                     <thead>
@@ -78,7 +88,7 @@
                                             <th></th>
                                             <th class="text-center"><?php echo $row['Debit']; ?></th>
                                             <th class="text-center"><?php echo $row['Credit']; ?></th>
-                                            <th class="text-center"><?php echo $row['AvailBalance']; ?></th>
+                                            <th class="text-center" style="font-weight: bold; color: <?php echo $color; ?>; font-size: 15px; "><?php echo $row['AvailBalance']; ?></th>
                                         </tr>
                                     </thead>
                                 </table>

@@ -27,8 +27,8 @@
                         <li>
                             <a href="gold_casting" style="cursor:pointer;"><i class="fa fa-edit fa-fw"></i> Gold Casting</a>
                         </li>
-                        <li class="hide">
-                            <a href="today_sale.html" style="cursor:pointer;"><i class="fa fa-wrench fa-fw"></i> Today Report</a>
+                        <li>
+                            <a href="today_sale" style="cursor:pointer;"><i class="fa fa-wrench fa-fw"></i> Today Report</a>
                         </li>
                         <li class="hide">
                             <a href="user.html" style="cursor:pointer;"><i class="fa fa-wrench fa-fw"></i> User Management</a>
