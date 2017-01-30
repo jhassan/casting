@@ -24,7 +24,6 @@ include_once('include/functions.php'); ?>
                         <!-- /.panel-heading -->
                         <div class="panel-body">
                             <div class="table-responsive" style="overflow-x:hidden !important;">
-                                Search:<input class="form-group" type="text" value=""/>
                                 <table class="table table-striped table-bordered table-hover" id="dataTables-example">
                                     <thead>
                                         <tr>
@@ -58,11 +57,36 @@ include_once('include/functions.php'); ?>
                                             <td class="text-center"><?php echo $row['gold_cut']; ?></td>
                                             <td class="text-center"><?php echo $row['mix_iron']; ?></td>
                                             <td class="text-center"><?php echo $row['pure_gold']; ?></td>
-                                            <td class="text-center"><?php echo $row['casting_labour_fee']; ?></td>
+                                            <td class="text-center"><?php echo $row['casting_labour_fee_gold']; ?></td>
                                             <td class="text-center"><?php echo $row['remaining_gold']; ?></td>
                                         </tr>
                                         <?php } ?>
+
                                     </tbody>
+                                    <div class="clear"></div>
+                                        <?php
+                                        $date = date("Y-m-d");
+                                        $SQL = "SELECT SUM(casting_weight) AS casting_weight,SUM(gold_cut) AS gold_cut,SUM(mix_iron) AS mix_iron,SUM(pure_gold) AS pure_gold,
+                                                SUM(casting_labour_fee_gold) AS casting_labour_fee_gold,SUM(remaining_gold) AS remaining_gold
+                                                FROM `tbl_casting` 
+                                                WHERE tbl_casting.date_created LIKE '%$date%'
+                                                ORDER BY tbl_casting.`casting_id` DESC";
+                                         $result = MySQLQuery($SQL);
+                                         $row = mysqli_fetch_array($result);
+                                        ?>
+                                        <thead>
+                                        <tr>
+                                            <th></th>
+                                            <th></th>
+                                            <th></th>
+                                            <th><?php echo $row['casting_weight']; ?></th>
+                                            <th><?php echo $row['gold_cut']; ?></th>
+                                            <th><?php echo $row['mix_iron']; ?></th>
+                                            <th><?php echo $row['pure_gold']; ?></th>
+                                            <th><?php echo $row['casting_labour_fee_gold']; ?></th>
+                                            <th><?php echo $row['remaining_gold']; ?></th>
+                                        </tr>
+                                    </thead>
                                 </table>
                             </div>
                         </div>

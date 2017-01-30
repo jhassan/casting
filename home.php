@@ -23,7 +23,6 @@
                         <!-- /.panel-heading -->
                         <div class="panel-body">
                             <div class="table-responsive" style="overflow-x:hidden !important;">
-                                Search:<input ng-model="search" class="form-group" type="text" value=""/>
                                 <table class="table table-striped table-bordered table-hover" id="dataTables-example">
                                     <thead>
                                         <tr>

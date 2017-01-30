@@ -7,6 +7,8 @@ RewriteRule ^advance$ advance.php [L]
 RewriteRule ^today_rate$ today_rate.php [L]
 RewriteRule ^home$ home.php [L]
 RewriteRule ^today_sale$ today_sale.php [L]
+RewriteRule ^ledger$ ledger.php [L]
+
 
 
 

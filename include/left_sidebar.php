@@ -30,8 +30,8 @@
                         <li>
                             <a href="today_sale" style="cursor:pointer;"><i class="fa fa-wrench fa-fw"></i> Today Report</a>
                         </li>
-                        <li class="hide">
-                            <a href="user.html" style="cursor:pointer;"><i class="fa fa-wrench fa-fw"></i> User Management</a>
+                        <li>
+                            <a href="ledger" style="cursor:pointer;"><i class="fa fa-wrench fa-fw"></i> General Ledger</a>
                         </li>    
                         
                         <li class="hide">

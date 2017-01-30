@@ -313,6 +313,7 @@
                                     'casting_labour_fee' => $casting_labour_fee,
                                     'remaining_advance_gold' => $remaining_advance_gold,
                                     'casting_labour_fee_gold' => $hd_labore_fee_gold,
+                                    'date' => date("Y-m-d"),
                                     'date_created' => date("Y-m-d H:i:s") );
 
                 $casting_id = InsertRec("tbl_casting", $GoldArray);
