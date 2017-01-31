@@ -34,8 +34,9 @@
                                     </thead>
                                     <tbody>
                                         <?php
-                                        $SQL = "SELECT SUM(`debit_gold`) AS Debit, SUM(`credit_gold`) AS Credit,client_name,
-                                                (SUM(`debit_gold`) - SUM(`credit_gold`)) AS AvailBalance
+                                        $SQL = "SELECT (
+                                                    SUM(`coa_credit` + `coa_debit`) + SUM(debit_gold)
+                                                  ) - SUM(credit_gold) AS AvailBalance, SUM(debit_gold) AS Debit, SUM(credit_gold) AS Credit, client_name
                                                 FROM `tbl_coa` 
                                                 INNER JOIN `tbl_debit_credit_gold` ON `tbl_debit_credit_gold`.`coa_code` = `tbl_coa`.`coa_code`
                                                 INNER JOIN `tbl_clients` ON `tbl_clients`.`client_id` = `tbl_debit_credit_gold`.`client_id`
@@ -62,8 +63,9 @@
                                         </tr>
                                         <?php } ?>
                                         <?php
-                                        $SQL = "SELECT SUM(`debit_gold`) AS Debit, SUM(`credit_gold`) AS Credit,
-                                                (SUM(`debit_gold`) - SUM(`credit_gold`)) AS AvailBalance
+                                        $SQL = "SELECT (
+                                                    SUM(`coa_credit` + `coa_debit`) + SUM(debit_gold)
+                                                  ) - SUM(credit_gold) AS AvailBalance, SUM(debit_gold) AS Debit, SUM(credit_gold) AS Credit
                                                 FROM `tbl_coa` 
                                                 INNER JOIN `tbl_debit_credit_gold` ON `tbl_debit_credit_gold`.`coa_code` = `tbl_coa`.`coa_code`
                                                 INNER JOIN `tbl_clients` ON `tbl_clients`.`client_id` = `tbl_debit_credit_gold`.`client_id`

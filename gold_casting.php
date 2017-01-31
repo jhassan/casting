@@ -269,8 +269,9 @@ include_once('include/functions.php'); ?>
                             $("#tr_remains_advance_gold").removeClass('hide');
                             $("#tr_remains_gold").addClass('hide');
                             var total_remain_advance = $("#td_advance_gold").html() - $("#td_total_gold_weight").html();
-                            $("#hd_total_remaining_advance_gold").html(total_remain_advance);
-                            $("#hd_total_remaining_advance_gold").val(total_remain_advance);
+                            console.log(total_remain_advance);
+                            $("#td_total_remaining_advance_gold").html(total_remain_advance.toFixed(3));
+                            $("#hd_total_remaining_advance_gold").val(total_remain_advance.toFixed(3));
                         }
                         else
                         {

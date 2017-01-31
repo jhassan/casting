@@ -89,9 +89,10 @@
                }
                 // Add Advance Gold in Advance table
                 $AdvanceArray = array('client_id' => $all_client, 
-                                  'advance_gold' => $advance_gold,
+                                  'pure_gold' => $advance_gold,
+                                  'date' => date("Y-m-d"),
                                   'date_created' => date("Y-m-d H:i:s") );
-                $advance_id = InsertRec("tbl_advance", $AdvanceArray);
+                $casting_id = InsertRec("tbl_casting", $AdvanceArray);
                 // Get Client COA
                 if(isset($new_client) && $new_client == 1) {
                   $coa_code = $coa_code;
@@ -113,7 +114,7 @@
                   $GoldAccountArray = array(
                         "debit_gold" => $tran["debit"],
                         'client_id' => $all_client,
-                        'advance_id' => $advance_id,
+                        'casting_id' => $casting_id,
                         "coa_code" => $tran["coa"],
                         "is_advance" => 1,
                         "`desc`" => $tran["desc"],

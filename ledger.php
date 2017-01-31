@@ -47,7 +47,7 @@
                                                  $result = MySQLQuery($SQL);
                                                  while($row = mysqli_fetch_array($result)) { // ,MYSQL_ASSOC
                                                 ?>
-                                                <option value="<?php echo $row['client_id']; ?>"><?php echo $row['client_name']; ?></option>
+                                                <option value="<?php echo $row['client_id']; ?>" <?php if($row['client_id'] == $_GET['all_client']) echo 'selected="selected"'  ?>><?php echo $row['client_name']; ?></option>
                                                 <?php } ?>
                                             </select>
                                            </div>
@@ -66,21 +66,47 @@
                                 $client_id = $_GET['all_client'];
                                 $client_name = GetClientName($client_id);
                                 $coa_code = GetCOA($client_id, 'c');
+                                // Get Opening Balance
+                                $op_sql = "SELECT  (SUM(`coa_credit`+`coa_debit`) + SUM(debit_gold)) - SUM(credit_gold) AS OpeningBalace FROM `tbl_casting` 
+                                            JOIN `tbl_debit_credit_gold` ON `tbl_debit_credit_gold`.`casting_id` = `tbl_casting`.`casting_id`
+                                            JOIN `tbl_coa` ON tbl_coa.`coa_code` = `tbl_debit_credit_gold`.`coa_code`
+                                            WHERE tbl_casting.`date` < '".$date_from."' AND tbl_debit_credit_gold.`coa_code` = '".$coa_code."'";
+                                            //echo $op_sql; die;
+                                $op_result = MySQLQuery($op_sql);
+                                $op_row = mysqli_fetch_array($op_result); // ,MYSQL_ASSOC  
+                                $op_balance = $op_row['OpeningBalace'];
+                                if(empty($op_balance))
+                                {
+                                    $where = " coa_code = '".$coa_code."' AND coa_type = 'c'";
+                                    $row = GetRecord("tbl_coa", $where);
+                                    $coa_credit = $row['coa_credit'];
+                                    $coa_debit = $row['coa_debit'];
+                                    if($coa_credit != 0)
+                                    {
+                                      $op_balance = $coa_credit;
+                                      $account_type = "Cr";  
+                                    }
+                                    else
+                                      {
+                                        $op_balance = $coa_debit;
+                                        $account_type = "Dr";
+                                      }         
+                                }          
                                 ?>
                             <div class="table-responsive" style="overflow-x:hidden !important;">
                                 <table width="100%" class="table table-bordered table-hover" id="example2">
                                   <tbody>
                                     <tr>
-                                      <td colspan="2" width="7%" valign="top" align="center"><strong><?php echo $client_name; ?></strong></td>
+                                      <td colspan="2" width="25%" valign="top" align="left"><strong><?php echo $client_name; ?></strong></td>
                                       <td width="11%"><strong>Date From</strong></td>
                                       <td width="14%" align="left"><?php echo date("d-M-Y", strtotime($date_from)); ?></td>
                                       <td width="8%" align="left"><strong>Date To</strong></td>
                                       <td width="13%"><?php echo date("d-M-Y", strtotime($date_to)); ?></td>
                                     </tr>
-                                    <tr>
+                                    <tr class="hide">
                                       <td colspan="2">&nbsp;</td>
                                       <td colspan="3"><strong>Opening Balance</strong></td>
-                                      <td>0<strong style="padding-left:10px">(Dr)</strong></td>
+                                      <td><?php echo number_format($op_balance,3); ?><strong style="padding-left:10px">(<?php echo $account_type;?>)</strong></td>
                                     </tr>
                                   </tbody>
                                 </table>
@@ -95,14 +121,7 @@
                                       <td width="10%" align="center"><b>Balance</b></td>
                                     </tr>
                                     <?php
-                                    // $arrayVoucher = DB::table('vouchermaster')
-                                    //                     ->join('voucherdetail', 'voucherdetail.vd_vm_id', '=', 'vouchermaster.vm_id')
-                                    //                     ->join('coa', 'coa.coa_code', '=', 'voucherdetail.vd_coa_code')
-                                    //                     ->select('vouchermaster.*','voucherdetail.*','coa.*')
-                                    //                     ->whereRaw('vd_coa_code = '.$coa.' AND vm_date >= "'.$start_date.'" AND vm_date <= "'.$end_date.'" AND vouchermaster.shop_id <= "'.$shop_id.'" AND vouchermaster.shop_id <> 0 ')
-                                    //                     ->orderBy('vd_id', 'desc')
-                                    //                     ->get();
-                                    $OP_Balance = 0;
+                                    $op_balance = 0;
                                     $total_balance = 0;
                                     $total_debit = 0;
                                     $total_credit = 0;
@@ -112,26 +131,29 @@
                                                     INNER JOIN tbl_coa ON tbl_coa.coa_code = tbl_debit_credit_gold.coa_code
                                                     WHERE tbl_coa.coa_code = '".$coa_code."' AND `date` >= '".$date_from."' AND `date` <= '".$date_to."'
                                                     ORDER BY tbl_casting.casting_id DESC"; 
-                                                    //echo $SQL;          die;
                                              $result = MySQLQuery($SQL);
-                                             while($row = mysqli_fetch_array($result)) { // ,MYSQL_ASSOC 
-                                              $total_balance += $OP_Balance + ($row['debit_gold'] - $row['credit_gold']); 
+                                             while($row = mysqli_fetch_array($result)) { // ,MYSQL_ASSOC
+                                             $total_balance += $op_balance + ($row['debit_gold'] - $row['credit_gold']);  
+                                              // if($account_type == "Dr")  
+                                              //   $total_balance += $op_balance + ($row['debit_gold'] - $row['credit_gold']); 
+                                              // else
+                                              //   $total_balance += $op_balance + ($row['debit_gold'] - $row['credit_gold']);       
                                               $total_debit += $row['debit_gold'];
                                               $total_credit += $row['credit_gold'];             
                                     ?>
                                         <tr>
-                                            <td align="center"><?php echo date("m/d/Y", strtotime($row['date'])) ?></td>      
+                                            <td align="center"><?php echo date("m/d/Y", strtotime($row['date'],3)) ?></td>      
                                             <td><?php echo $row['desc']; ?></td>        
-                                            <td align="right"><?php echo $row['debit_gold']; ?></td>       
-                                            <td align="right"><?php echo $row['credit_gold']; ?></td>        
-                                            <td align="right"><?php echo $total_balance; ?></td>  
+                                            <td align="right"><?php echo number_format($row['debit_gold'],3); ?></td>       
+                                            <td align="right"><?php echo number_format($row['credit_gold'],3); ?></td>        
+                                            <td align="right"><?php echo number_format($total_balance,3); ?></td>  
                                         </tr> 
                                     <?php } ?>      
                                         <tr>        
                                             <td colspan="2" align="right"><strong>Total</strong></td>
-                                            <td align="right"><strong><?php echo $total_debit;?></strong></td>
-                                            <td align="right"><strong><?php echo $total_credit;?></strong></td>
-                                            <td align="right"><strong><?php echo $total_balance;?></strong></td>
+                                            <td align="right"><strong><?php echo number_format($total_debit,3);?></strong></td>
+                                            <td align="right"><strong><?php echo number_format($total_credit,3);?></strong></td>
+                                            <td align="right"><strong><?php echo number_format($total_balance,3);?></strong></td>
                                         </tr>
                                         </tbody>
                                 </table>
